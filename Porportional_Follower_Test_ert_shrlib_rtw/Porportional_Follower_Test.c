@@ -7,9 +7,9 @@
  *
  * Code generated for Simulink model 'Porportional_Follower_Test'.
  *
- * Model version                  : 1.5
+ * Model version                  : 1.6
  * Simulink Coder version         : 9.8 (R2022b) 13-May-2022
- * C/C++ source code generated on : Mon Mar 27 12:18:47 2023
+ * C/C++ source code generated on : Mon Mar 27 19:02:21 2023
  *
  * Target selection: ert_shrlib.tlc
  * Embedded hardware selection: Intel->x86-64 (Windows64)

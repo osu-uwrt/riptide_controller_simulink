@@ -14,6 +14,8 @@ endif()
 ######################################################################
 get_filename_component(START_DIR .. ABSOLUTE)
 set(MATLAB_ROOT /usr/local/MATLAB/R2022b CACHE PATH "")
+set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 if(${CMAKE_CURRENT_BINARY_DIR} STREQUAL ${CMAKE_CURRENT_SOURCE_DIR})
     set(BUILDING_IN_SOURCE_DIR TRUE)
     set(BINARY_START_DIR "${START_DIR}")
@@ -31,10 +33,7 @@ endif()
 add_library(Porportional_Follower_Test SHARED ${START_DIR}/Porportional_Follower_Test_ert_shrlib_rtw/Porportional_Follower_Test.c)
 set_target_properties(Porportional_Follower_Test PROPERTIES
     PREFIX ""
-    POSITION_INDEPENDENT_CODE ON
-    RUNTIME_OUTPUT_DIRECTORY "${BINARY_START_DIR}/./$<0:>"
-    LIBRARY_OUTPUT_DIRECTORY "${BINARY_START_DIR}/./$<0:>"
-    ARCHIVE_OUTPUT_DIRECTORY "${BINARY_START_DIR}/./$<0:>")
+    POSITION_INDEPENDENT_CODE ON)
 if(CMAKE_CXX_COMPILER)
     set_target_properties(Porportional_Follower_Test PROPERTIES LINKER_LANGUAGE CXX)
 endif()
@@ -53,6 +52,7 @@ target_compile_definitions(Porportional_Follower_Test PRIVATE -DMODEL=Porportion
     -DMULTI_INSTANCE_CODE=0
     -DINTEGER_CODE=0
     -DMT=0)
+target_compile_options(Porportional_Follower_Test PRIVATE -fwrapv)
 target_include_directories(Porportional_Follower_Test PUBLIC $<BUILD_INTERFACE:${START_DIR}>
     $<INSTALL_INTERFACE:$<INSTALL_PREFIX>>
     $<BUILD_INTERFACE:${START_DIR}/Porportional_Follower_Test_ert_shrlib_rtw>
@@ -67,6 +67,23 @@ if(FOUND_LIBM)
    target_link_libraries(Porportional_Follower_Test PUBLIC m)
 endif()
 
+
+######################################################################
+## Target install and export rules
+######################################################################
+install(TARGETS Porportional_Follower_Test EXPORT Porportional_Follower_TestTargets RUNTIME DESTINATION .
+    LIBRARY DESTINATION .
+    ARCHIVE DESTINATION .)
+install(EXPORT Porportional_Follower_TestTargets NAMESPACE Porportional_Follower_Test:: DESTINATION Porportional_Follower_Test_ert_shrlib_rtw/export)
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/Porportional_Follower_Test.cmake 
+ "include(\"\${CMAKE_CURRENT_LIST_DIR}/Porportional_Follower_TestTargets.cmake\")" \n
+    "target_include_directories(Porportional_Follower_Test::Porportional_Follower_Test INTERFACE \n"
+    "    \${MATLAB_ROOT}/extern/include" \n 
+    "    \${MATLAB_ROOT}/simulink/include" \n 
+    "    \${MATLAB_ROOT}/rtw/c/src" \n 
+    "    \${MATLAB_ROOT}/rtw/c/src/ext_mode/common" \n 
+    "    \${MATLAB_ROOT}/rtw/c/ert)" \n )
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/Porportional_Follower_Test.cmake DESTINATION Porportional_Follower_Test_ert_shrlib_rtw/export)
 
 ######################################################################
 ## Build success message
