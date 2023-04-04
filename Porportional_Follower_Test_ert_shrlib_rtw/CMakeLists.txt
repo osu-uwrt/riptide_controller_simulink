@@ -39,13 +39,13 @@ if(CMAKE_CXX_COMPILER)
 endif()
 target_compile_features(Porportional_Follower_Test PUBLIC c_std_99)
 target_compile_definitions(Porportional_Follower_Test PRIVATE -DMODEL=Porportional_Follower_Test
-    -DNUMST=2
+    -DNUMST=1
     -DNCSTATES=0
     -DHAVESTDIO
     -DMODEL_HAS_DYNAMICALLY_LOADED_SFCNS=0
     -DCLASSIC_INTERFACE=0
     -DALLOCATIONFCN=0
-    -DTID01EQ=1
+    -DTID01EQ=0
     -DTERMFCN=1
     -DONESTEPFCN=1
     -DMAT_FILE=0
