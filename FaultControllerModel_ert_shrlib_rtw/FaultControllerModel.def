@@ -1,0 +1,15 @@
+        {
+            global:
+        FaultControllerModel_M;
+        FaultControllerModel_U;
+        FaultControllerModel_Y;
+    FaultControllerModel_initialize;
+            FaultControllerModel_step;
+        FaultControllerModel_terminate;
+
+
+        
+
+        local:
+        *;
+    };
